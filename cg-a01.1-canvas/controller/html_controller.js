@@ -12,8 +12,8 @@
 
 
 /* requireJS module definition */
-define(["jquery", "Line"],
-    (function($, Line) {
+define(["jquery", "Line", "Point", "Circle"],
+    (function($, Line, Point, Circle) {
         "use strict";
 
         /*
@@ -32,6 +32,11 @@ define(["jquery", "Line"],
             var randomY = function() {
                 return Math.floor(Math.random()*(context.canvas.height-10))+5;
             };
+            
+            //generate a random radius within the canvas
+            var randomRadius = function() {
+                return parseInt(Math.random()*100+15);
+            }
 
             // generate random color in hex notation
             var randomColor = function() {
@@ -73,6 +78,45 @@ define(["jquery", "Line"],
 
             }));
 
+            /*
+             * event handler for "new point button".
+             */
+            $("#btnNewPoint").click( (function() {
+
+                // create the actual point and add it to the scene
+                var style = {
+                    color: randomColor()
+                };
+
+                var point = new Point( [randomX(),randomY()],
+                    style );
+                scene.addObjects([point]);
+
+                // deselect all objects, then select the newly created object
+                sceneController.deselect();
+
+            }));
+            
+            /*
+             * event handler for "new circle button".
+             */
+            $("#btnNewCircle").click( (function() {
+
+                // create the actual circle and add it to the scene
+                var style = {
+                    width: 2,
+                    color: randomColor()
+                };
+                
+                var circle = new Circle( [randomX(),randomY()],
+                    randomRadius(),
+                    style );
+                scene.addObjects([circle]);
+
+                // deselect all objects, then select the newly created object
+                sceneController.deselect();
+
+            }));
 
         };
 

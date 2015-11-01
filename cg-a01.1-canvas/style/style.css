@@ -41,3 +41,9 @@ h3 {
 input {
     width:80px;
 }
+
+#param_area button {
+    margin-bottom: 10px;
+    width: 50%;
+    margin-left: 25%;
+}
