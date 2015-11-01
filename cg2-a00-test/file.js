@@ -58,7 +58,7 @@ define(["jquery", "util"],
       if(evt.target.error.name == "NotReadableErr") {
         throw new Util.RuntimeError("could not read file!"); 
       };
-    }:
+    };
         
     // module only exports loadFile
     return loadFile
