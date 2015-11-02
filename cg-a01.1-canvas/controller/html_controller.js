@@ -12,8 +12,8 @@
 
 
 /* requireJS module definition */
-define(["jquery", "Line", "Point", "Circle"],
-    (function($, Line, Point, Circle) {
+define(["jquery", "SceneController", "Line", "Point", "Circle"],
+    (function($, SceneController, Line, Point, Circle) {
         "use strict";
 
         /*
@@ -117,6 +117,18 @@ define(["jquery", "Line", "Point", "Circle"],
                 sceneController.deselect();
 
             }));
+            
+            $("#drawing_area").click( (function(){
+                
+                var selectedObj = SceneController.getSelectedObject;
+                console.log(selectedObj);
+                
+                $("#colorField").val("#FF8040");
+                $("#lineField").val(1);
+                
+                if(true) $("#radiusbox").css({'display' : 'block'});
+                else $("#radiusbox").css({'display' : 'none'});
+            }));
 
         };
 
@@ -125,7 +137,4 @@ define(["jquery", "Line", "Point", "Circle"],
 
 
     })); // require
-
-
-
-            
+    

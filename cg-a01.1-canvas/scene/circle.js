@@ -30,8 +30,10 @@ define(["util", "Scene", "PointDragger"],
             // draw style for drawing the line
             this.circleStyle = circleStyle || { width: "2", color: "#0000AA" };
 
-            // initial values in case either point is undefined
+            // initial values in case either point is [10,10]
             this.p = point || [10,10];
+            // initial values in case either radiust is 20
+            this.radius = radius || 20;
             
 
             // draw this line into the provided 2D rendering context
@@ -40,7 +42,7 @@ define(["util", "Scene", "PointDragger"],
                 // what shape to draw
                 context.beginPath();
                 context.arc(this.p[0], this.p[1],       // position
-                    radius,                             // radius
+                    this.radius,                             // radius
                     0.0, Math.PI*2,                     // start and end angle
                     true);                              // clockwise
                 context.closePath();
@@ -64,17 +66,27 @@ define(["util", "Scene", "PointDragger"],
 
             };
 
-            // return list of draggers to manipulate this line
+            // return list of draggers to manipulate this circle
             this.createDraggers = function() {
 
                 var draggerStyle = { radius:5, color: this.circleStyle.color, width:2, fill:true };
                 var draggers = [];
 
                 // create closure and callbacks for dragger
-                var _point = this;
-                var getP0 = function() { return _point.p; };
-                var setP0 = function(dragEvent) { _point.p = dragEvent.position; };
+                var _circle = this;
+                
+                var getP0 = function() { return _circle.p; };
+                var getP1 = function() { return [(_circle.p[0] + _circle.radius * Math.cos(-45)), (_circle.p[1] + _circle.radius * Math.sin(-45))]; };
+                var setP0 = function(dragEvent) { _circle.p = dragEvent.position; };
+                var setP1 = function(dragEvent) {
+                    var tempX = dragEvent.position[0] - _circle.p[0];
+                    var tempY = dragEvent.position[1] - _circle.p[1];
+                    
+                    _circle.radius = Math.sqrt((tempX*tempX) + (tempY*tempY));
+                    console.log(_circle.radius);
+                };
                 draggers.push( new PointDragger(getP0, setP0, draggerStyle) );
+                draggers.push( new PointDragger(getP1, setP1, draggerStyle) );
                 
 
                 return draggers;
