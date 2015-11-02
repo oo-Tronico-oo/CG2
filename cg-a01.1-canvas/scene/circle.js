@@ -18,7 +18,8 @@ define(["util", "Scene", "PointDragger"],
          *  A simple point that can be dragged.
          *  Parameters:
          *  - point: array objects representing [x,y] coordinates of middle point
-         *  - pointStyle: object defining color attributes for point drawing,
+         *  - radius: number for radius
+         *  - circleStyle: object defining color attributes for point drawing,
          *       begin of the form { color: "#00FF00" }
          */
 
@@ -28,8 +29,8 @@ define(["util", "Scene", "PointDragger"],
             point[0] + "," + point[1] + "] with the radius " + radius + ".");
 
             // draw style for drawing the line
-            this.circleStyle = circleStyle || { width: "2", color: "#0000AA" };
-
+            this.style = circleStyle || { width: "2", color: "#0000AA" };
+            
             // initial values in case either point is [10,10]
             this.p = point || [10,10];
             // initial values in case either radiust is 20
@@ -48,8 +49,8 @@ define(["util", "Scene", "PointDragger"],
                 context.closePath();
 
                 // draw style
-                context.lineWidth   = this.circleStyle.width;
-                context.strokeStyle = this.circleStyle.color;
+                context.lineWidth   = this.style.width;
+                context.strokeStyle = this.style.color;
                 
                 context.stroke();
             };
@@ -61,7 +62,7 @@ define(["util", "Scene", "PointDragger"],
                 // is less or equal ( radius + (line width)/2 )
                 var dx = pos[0] - this.p[0];
                 var dy = pos[1] - this.p[1];
-                var r = radius + this.circleStyle.width/2;
+                var r = radius + this.style.width/2;
                 return (dx*dx + dy*dy) <= (r*r + r*5) && (dx*dx + dy*dy) >= (r*r - r*5);
 
             };
@@ -69,7 +70,7 @@ define(["util", "Scene", "PointDragger"],
             // return list of draggers to manipulate this circle
             this.createDraggers = function() {
 
-                var draggerStyle = { radius:5, color: this.circleStyle.color, width:2, fill:true };
+                var draggerStyle = { radius:5, color: this.style.color, width:2, fill:true };
                 var draggers = [];
 
                 // create closure and callbacks for dragger
@@ -83,7 +84,6 @@ define(["util", "Scene", "PointDragger"],
                     var tempY = dragEvent.position[1] - _circle.p[1];
                     
                     _circle.radius = Math.sqrt((tempX*tempX) + (tempY*tempY));
-                    console.log(_circle.radius);
                 };
                 draggers.push( new PointDragger(getP0, setP0, draggerStyle) );
                 draggers.push( new PointDragger(getP1, setP1, draggerStyle) );

@@ -66,7 +66,10 @@ define(["jquery", "SceneController", "Line", "Point", "Circle"],
                     width: Math.floor(Math.random()*3)+1,
                     color: randomColor()
                 };
-
+                
+                $("#radiusBox").css({'display' : 'none'});
+                $("#lineBox").css({'display' : 'none'});
+                
                 var line = new Line( [randomX(),randomY()],
                     [randomX(),randomY()],
                     style );
@@ -74,7 +77,6 @@ define(["jquery", "SceneController", "Line", "Point", "Circle"],
 
                 // deselect all objects, then select the newly created object
                 sceneController.deselect();
-                sceneController.select(line); // this will also redraw
 
             }));
 
@@ -85,9 +87,13 @@ define(["jquery", "SceneController", "Line", "Point", "Circle"],
 
                 // create the actual point and add it to the scene
                 var style = {
+                    width: 2,
                     color: randomColor()
                 };
 
+                $("#radiusBox").css({'display' : 'none'});
+                $("#lineBox").css({'display' : 'none'});
+                
                 var point = new Point( [randomX(),randomY()],
                     style );
                 scene.addObjects([point]);
@@ -108,6 +114,9 @@ define(["jquery", "SceneController", "Line", "Point", "Circle"],
                     color: randomColor()
                 };
                 
+                $("#radiusBox").css({'display' : 'none'});
+                $("#lineBox").css({'display' : 'none'});
+                
                 var circle = new Circle( [randomX(),randomY()],
                     randomRadius(),
                     style );
@@ -118,16 +127,67 @@ define(["jquery", "SceneController", "Line", "Point", "Circle"],
 
             }));
             
+            /*
+             * event handler for change object.
+             */
             $("#drawing_area").click( (function(){
                 
-                var selectedObj = SceneController.getSelectedObject;
-                console.log(selectedObj);
+                var selectedObj = sceneController.getSelectedObject();
+                          
+                if(selectedObj instanceof Line || selectedObj instanceof Point || selectedObj instanceof Circle){
+                    $("#colorField").val(selectedObj.style.color);
+                    $("#lineField").val(parseInt(selectedObj.style.width));
+                    
+                    if(selectedObj instanceof Circle){
+                        $("#radiusBox").css({'display' : 'block'});
+                        $("#lineBox").css({'display' : 'block'});
+                        $("#radiusField").val(parseInt(selectedObj.radius));
+                    }
+                    
+                    if(selectedObj instanceof Point){
+                        $("#lineBox").css({'display' : 'none'});
+                        $("#radiusBox").css({'display' : 'none'});
+                    }
+                    
+                    if(selectedObj instanceof Line){
+                        $("#radiusBox").css({'display' : 'none'});
+                        $("#lineBox").css({'display' : 'block'});
+                    }
+                }
                 
-                $("#colorField").val("#FF8040");
-                $("#lineField").val(1);
-                
-                if(true) $("#radiusbox").css({'display' : 'block'});
-                else $("#radiusbox").css({'display' : 'none'});
+            }));
+            
+            /*
+             * event handler for input color.
+             */
+            $("#colorField").change( (function(){
+                var selectedObj = sceneController.getSelectedObject();
+                if(selectedObj instanceof Line || selectedObj instanceof Point || selectedObj instanceof Circle){
+                    selectedObj.style.color = $("#colorField").val();
+                    sceneController.select(selectedObj);
+                }
+            }));
+            
+            /*
+             * event handler for input linewidth.
+             */
+            $("#lineField").change( (function(){
+                var selectedObj = sceneController.getSelectedObject();
+                if(selectedObj instanceof Line || selectedObj instanceof Circle){
+                    selectedObj.style.width = $("#lineField").val();
+                    sceneController.select(selectedObj);
+                }
+            }));
+            
+            /*
+             * event handler for input radius.
+             */
+            $("#radiusField").change( (function(){
+                var selectedObj = sceneController.getSelectedObject();
+                if(selectedObj instanceof Circle){
+                    selectedObj.radius = $("#radiusField").val();
+                    sceneController.select(selectedObj);
+                }
             }));
 
         };
