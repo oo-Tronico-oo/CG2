@@ -22,16 +22,17 @@ define(["util", "Scene", "PointDragger"],
          *       begin of the form { color: "#00FF00" }
          */
 
-        var Point = function(point, pointStyle) {
+        var Point = function(point, radius,  lineStyle) {
 
             console.log("creating point on position [" +
             point[0] + "," + point[1] + "].");
 
             // draw style for drawing the line
-            this.style = pointStyle || { width: "2", color: "#0000AA" };
+            this.lineStyle = lineStyle || { width: "2", color: "#0000AA" };
             
             // initial values in case either point is undefined
-            this.p = point || [10,10];
+            this.center = point || [10,10];
+            this.radius = radius || 20;
             
 
             // draw this line into the provided 2D rendering context
@@ -39,16 +40,16 @@ define(["util", "Scene", "PointDragger"],
 
                 // what shape to draw
                 context.beginPath();
-                context.arc(this.p[0], this.p[1],       // position
-                    5,                        // radius
+                context.arc(this.center[0], this.center[1],       // position
+                    this.radius,                        // radius
                     0.0, Math.PI*2,           // start and end angle
                     true);                    // clockwise
                 context.closePath();
 
                 // draw style
-                context.lineWidth   = this.style.width;
-                context.strokeStyle = this.style.color;
-                context.fillStyle   = this.style.color;
+                context.lineWidth   = this.lineStyle.width;
+                context.strokeStyle = this.lineStyle.color;
+                context.fillStyle   = this.lineStyle.color;
 
                 // trigger the actual drawing
                 //if(this.pointStyle.fill) {
@@ -60,13 +61,10 @@ define(["util", "Scene", "PointDragger"],
             // test whether the mouse position is on this line segment
             this.isHit = function(context, pos) {
 
-                // what is my current position?
-                //var pos = this.getPos();
-
                 // check whether distance between mouse and dragger's center
                 // is less or equal ( radius + (line width)/2 )
-                var dx = pos[0] - this.p[0];
-                var dy = pos[1] - this.p[1];
+                var dx = pos[0] - this.center[0];
+                var dy = pos[1] - this.center[1];
                 var r = 6;
                 return (dx*dx + dy*dy) <= (r*r);
 
@@ -75,13 +73,13 @@ define(["util", "Scene", "PointDragger"],
             // return list of draggers to manipulate this line
             this.createDraggers = function() {
 
-                var draggerStyle = { radius:5, color: this.style.color, width:2, fill:false };
+                var draggerStyle = { radius:5, color: this.lineStyle.color, width:2, fill:false };
                 var draggers = [];
 
                 // create closure and callbacks for dragger
                 var _point = this;
-                var getP0 = function() { return _point.p; };
-                var setP0 = function(dragEvent) { _point.p = dragEvent.position; };
+                var getP0 = function() { return _point.center; };
+                var setP0 = function(dragEvent) { _point.center = dragEvent.position; };
                 draggers.push( new PointDragger(getP0, setP0, draggerStyle) );
                 
 

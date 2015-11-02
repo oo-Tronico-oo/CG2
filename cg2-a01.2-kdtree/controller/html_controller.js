@@ -64,7 +64,7 @@ define(["jquery", "Line", "Circle", "Point", "KdTree", "util", "kdutil"],
             $("#btnNewLine").click( (function() {
 
                 // create the actual line and add it to the scene
-                var style = {
+                var lineStyle = {
                     width: Math.floor(Math.random()*3)+1,
                     color: randomColor()
                 };
@@ -74,7 +74,7 @@ define(["jquery", "Line", "Circle", "Point", "KdTree", "util", "kdutil"],
                 
                 var line = new Line( [randomX(),randomY()],
                     [randomX(),randomY()],
-                    style );
+                    lineStyle );
                 scene.addObjects([line]);
 
                 // deselect all objects, then select the newly created object
@@ -88,7 +88,7 @@ define(["jquery", "Line", "Circle", "Point", "KdTree", "util", "kdutil"],
             $("#btnNewPoint").click( (function() {
 
                 // create the actual point and add it to the scene
-                var style = {
+                var lineStyle = {
                     width: 2,
                     color: randomColor()
                 };
@@ -96,8 +96,8 @@ define(["jquery", "Line", "Circle", "Point", "KdTree", "util", "kdutil"],
                 $("#radiusBox").css({'display' : 'none'});
                 $("#lineBox").css({'display' : 'none'});
                 
-                var point = new Point( [randomX(),randomY()],
-                    style );
+                var point = new Point( [randomX(),randomY()], 5,
+                    lineStyle );
                 scene.addObjects([point]);
 
                 // deselect all objects, then select the newly created object
@@ -111,8 +111,8 @@ define(["jquery", "Line", "Circle", "Point", "KdTree", "util", "kdutil"],
             $("#btnNewCircle").click( (function() {
 
                 // create the actual circle and add it to the scene
-                var style = {
-                    width: 2,
+                var lineStyle = {
+                    width: Math.floor(Math.random()*3)+1,
                     color: randomColor()
                 };
                 
@@ -121,7 +121,7 @@ define(["jquery", "Line", "Circle", "Point", "KdTree", "util", "kdutil"],
                 
                 var circle = new Circle( [randomX(),randomY()],
                     randomRadius(),
-                    style );
+                    lineStyle );
                 scene.addObjects([circle]);
 
                 // deselect all objects, then select the newly created object
@@ -135,7 +135,7 @@ define(["jquery", "Line", "Circle", "Point", "KdTree", "util", "kdutil"],
             $("#btnNewPointList").click( (function() {
 
                 // create the actual line and add it to the scene
-                var style = {
+                var lineStyle = {
                     width: Math.floor(Math.random()*3)+1,
                     color: randomColor()
                 };
@@ -143,7 +143,7 @@ define(["jquery", "Line", "Circle", "Point", "KdTree", "util", "kdutil"],
                 var numPoints = parseInt($("#numPoints").attr("value"));;
                 for(var i=0; i<numPoints; ++i) {
                     var point = new Point([randomX(), randomY()], 5,
-                        style);
+                        lineStyle);
                     scene.addObjects([point]);
                     pointList.push(point);
                 }
@@ -161,8 +161,8 @@ define(["jquery", "Line", "Circle", "Point", "KdTree", "util", "kdutil"],
                 var selectedObj = sceneController.getSelectedObject();
                           
                 if(selectedObj instanceof Line || selectedObj instanceof Point || selectedObj instanceof Circle){
-                    $("#colorField").val(selectedObj.style.color);
-                    $("#lineField").val(parseInt(selectedObj.style.width));
+                    $("#colorField").val(selectedObj.lineStyle.color);
+                    $("#lineField").val(parseInt(selectedObj.lineStyle.width));
                     
                     if(selectedObj instanceof Circle){
                         $("#radiusBox").css({'display' : 'block'});
@@ -189,7 +189,7 @@ define(["jquery", "Line", "Circle", "Point", "KdTree", "util", "kdutil"],
             $("#colorField").change( (function(){
                 var selectedObj = sceneController.getSelectedObject();
                 if(selectedObj instanceof Line || selectedObj instanceof Point || selectedObj instanceof Circle){
-                    selectedObj.style.color = $("#colorField").val();
+                    selectedObj.lineStyle.color = $("#colorField").val();
                     sceneController.select(selectedObj);
                 }
             }));
@@ -200,7 +200,7 @@ define(["jquery", "Line", "Circle", "Point", "KdTree", "util", "kdutil"],
             $("#lineField").change( (function(){
                 var selectedObj = sceneController.getSelectedObject();
                 if(selectedObj instanceof Line || selectedObj instanceof Circle){
-                    selectedObj.style.width = $("#lineField").val();
+                    selectedObj.lineStyle.width = $("#lineField").val();
                     sceneController.select(selectedObj);
                 }
             }));
@@ -243,12 +243,12 @@ define(["jquery", "Line", "Circle", "Point", "KdTree", "util", "kdutil"],
              */
             $("#btnQueryKdTree").click( (function() {
 
-                var style = {
+                var lineStyle = {
                     width: 2,
                     color: "#ff0000"
                 };
                 var queryPoint = new Point([randomX(), randomY()], 2,
-                    style);
+                    lineStyle);
                 scene.addObjects([queryPoint]);
                 sceneController.select(queryPoint); 
 
