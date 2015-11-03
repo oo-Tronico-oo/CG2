@@ -82,20 +82,12 @@ define(["kdutil", "vec2", "Scene", "KdNode", "BoundingBox"],
                 var pointListRightSite = [];
                 
                 for(var i = 0; i < pointList.length; i++){
-                    console.log(dim);
-                    console.log(pointList);
-                    console.log(pointList[i]);
-                    console.log((pointList[i]).center);
-                    console.log(kdNode.point.center);
-                    console.log(!(pointList[i].center === kdNode.point.center));
                     if(!(pointList[i].center === kdNode.point.center) && pointList[i].center[dim] <= kdNode.point.center[dim]) pointListLeftSite.push(pointList[i]);
-                    else pointListRightSite.push(pointList[i]);
+                    if(!(pointList[i].center === kdNode.point.center) && pointList[i].center[dim] > kdNode.point.center[dim]) pointListRightSite.push(pointList[i]);
                 }
-                console.log(pointListLeftSite);
-                console.log(pointListRightSite);
                 
-                if(pointListLeftSite.length > 1) kdNode.leftChild = this.build(pointListLeftSite, nextAxis, kdNode, true);
-                if(pointListRightSite.length > 1)kdNode.rightChild = this.build(pointListRightSite, nextAxis, kdNode, false);
+                if(pointListLeftSite.length > 0) kdNode.leftChild = this.build(pointListLeftSite, nextAxis, kdNode, true);
+                if(pointListRightSite.length > 0)kdNode.rightChild = this.build(pointListRightSite, nextAxis, kdNode, false);
                 
                 // return root node
                 return kdNode;
