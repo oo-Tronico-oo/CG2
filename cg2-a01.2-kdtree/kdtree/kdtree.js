@@ -23,6 +23,7 @@ define(["kdutil", "vec2", "Scene", "KdNode", "BoundingBox"],
          */
         var KdTree = function (pointList) {
 
+            this.pointList = pointList;
             /**
              *
              * @param pointList - list of points
@@ -32,32 +33,72 @@ define(["kdutil", "vec2", "Scene", "KdNode", "BoundingBox"],
              * @returns returns root node after tree is build
              */
             this.build = function(pointList, dim, parent, isLeft) {
-
+                
                 // IMPLEMENT!
                 // create new node
+                var kdNode = new KdNode(dim);
 
                 // find median position in pointList
+                var indexArray = KdUtil.median(pointList, dim);
                 
                 // compute next axis
+                var nextAxis = Math.abs(dim-1);
                 
                 // set point in node
+                kdNode.point = pointList[indexArray];
                 
                 // compute bounding box for node
                 // check if node is root (has no parent)
                 // 
-                // take a look in findNearestNeighbor why we 
+                // take a look in findNearestNeighbor why we  
                 // need this bounding box!
                 if( !parent ) {
                     // Note: hardcoded canvas size here
+                    var boxHeight = $("#drawing_area").attr("height");
+                    var boxWidth = $("#drawing_area").attr("width");
+                    
+                    kdNode.bbox = new BoundingBox(0, 0, boxWidth, boxHeight, kdNode.point, dim);
                 } else {
                     // create bounding box and distinguish between axis and
                     // which side (left/right) the node is on
-                }
+                    if(dim){
+                        if(isLeft){
+                            kdNode.bbox = new BoundingBox(parent.bbox.xmin, parent.bbox.ymin, parent.point.center[0], parent.bbox.ymax, kdNode.point, dim);
+                        }else
+                            kdNode.bbox = new BoundingBox(parent.point.center[0], parent.bbox.ymin, parent.bbox.xmax, parent.bbox.ymax, kdNode.point, dim);
+                    } else {
+                        if(isLeft){
+                            kdNode.bbox = new BoundingBox(parent.bbox.xmin, parent.bbox.ymin, parent.bbox.xmax, parent.point.center[1], kdNode.point, dim);
+                        }else
+                            kdNode.bbox = new BoundingBox(parent.bbox.xmin, parent.point.center[1], parent.bbox.xmax, parent.bbox.ymax, kdNode.point, dim);
+                    }
+                    
+                    
+                };
 
                 // create point list left/right and
                 // call build for left/right arrays
+                var pointListLeftSite = [];
+                var pointListRightSite = [];
+                
+                for(var i = 0; i < pointList.length; i++){
+                    console.log(dim);
+                    console.log(pointList);
+                    console.log(pointList[i]);
+                    console.log((pointList[i]).center);
+                    console.log(kdNode.point.center);
+                    console.log(!(pointList[i].center === kdNode.point.center));
+                    if(!(pointList[i].center === kdNode.point.center) && pointList[i].center[dim] <= kdNode.point.center[dim]) pointListLeftSite.push(pointList[i]);
+                    else pointListRightSite.push(pointList[i]);
+                }
+                console.log(pointListLeftSite);
+                console.log(pointListRightSite);
+                
+                if(pointListLeftSite.length > 1) kdNode.leftChild = this.build(pointListLeftSite, nextAxis, kdNode, true);
+                if(pointListRightSite.length > 1)kdNode.rightChild = this.build(pointListRightSite, nextAxis, kdNode, false);
                 
                 // return root node
+                return kdNode;
             };
 
             /**
@@ -87,7 +128,7 @@ define(["kdutil", "vec2", "Scene", "KdNode", "BoundingBox"],
                 }
 
                 var first, second;
-                if (dim == 0) {
+                if (dim === 0) {
                     if ( query.center[0] < node.point.center[0]) {
                         first = node.leftChild;
                         second = node.rightChild;

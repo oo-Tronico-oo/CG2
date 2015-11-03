@@ -99,7 +99,7 @@ define(["jquery", "Line", "Circle", "Point", "KdTree", "util", "kdutil"],
                 var point = new Point( [randomX(),randomY()], 5,
                     lineStyle );
                 scene.addObjects([point]);
-
+                
                 // deselect all objects, then select the newly created object
                 sceneController.deselect();
 
