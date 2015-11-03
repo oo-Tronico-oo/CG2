@@ -41,10 +41,12 @@
         <button id="btnNewLine"   type="button"   >New Line</button><br>
         <button id="btnNewCircle"   type="button"   >New Circle</button><br>
         <button id="btnNewPoint"   type="button"   >New Point</button><br>
+        <button id="btnNewParaCurve"   type="button"   >New Parametric Curve</button><br>
+        <button id="btnNewBeziCurvet"   type="button"   >New Bezier Curve</button><br>
         
         <h3>Selected Object:</h3>
         <p>Color:</p>
-        <input id="colorField" type="color" />
+        <input id="colorField" type="color" /><br>
         
         <div id="lineBox" style="display: none">
         <p>Line width: </p>
@@ -56,6 +58,24 @@
         <input id="radiusField" type="number" />
         </div>
         
+        <p>x(t):</p>
+        <input id="xt" type="text" /><br>
+        
+        <p>y(t):</p>
+        <input id="yt" type="text" /><br>
+        
+        <p>min t:</p>
+        <input id="minT" type="number" /><br>
+        
+        <p>max t:</p>
+        <input id="maxT" type="number" /><br>
+        
+        <p>segments:</p>
+        <input id="segments" type="number" /><br>
+        
+        <p>tick marks: </p>
+        <input id="tickMarks" type="checkbox"><br>
+        
         <h3>kd-Tree:</h3>
         <button id="btnNewPointList"   type="button"   >New PointList</button>
         <input id="numPoints" type="number">
@@ -64,7 +84,7 @@
         <button id="btnQueryKdTree"   type="button"   >Query KdTree</button><br>
         
         <p>show kd-Tree</p>
-        <input id="visKdTree" type="checkbox" value="5">
+        <input id="visKdTree" type="checkbox">
         
         <!-- add more here... -->
 
