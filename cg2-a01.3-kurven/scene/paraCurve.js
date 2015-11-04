@@ -30,7 +30,7 @@ define(["vec2"],
          *       begin of the form { width: 2, color: "#00FF00" }
          */
 
-        var Curve = function(xt, yt, minT, maxT, segm, lineStyle) {
+        var ParametricCurve = function(xt, yt, minT, maxT, segm, lineStyle) {
 
             console.log("creating parametic curve with x-formula " +
             xt + " & y-formula " + yt );
@@ -114,7 +114,7 @@ define(["vec2"],
         };
 
         // this module only exports the constructor for parametic curve objects
-        return Curve;
+        return ParametricCurve;
 
     })); // define
 

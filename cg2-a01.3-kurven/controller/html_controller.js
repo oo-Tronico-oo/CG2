@@ -111,8 +111,8 @@ define(["jquery", "Line", "Circle", "Point", "ParametricCurve", "BezierCurve", "
             $("#btnNewParaCurve").click( (function(){
                 
                 var lineStyle = {
-                    width: Math.floor(Math.random()*3)+1,
-                    color: randomColor()
+                    width: $("#lineField").val() || Math.floor(Math.random()*3)+1,
+                    color: $("#colorField").val() || randomColor()
                 };
                 
                 var xt = $("#xt").val();
@@ -132,6 +132,27 @@ define(["jquery", "Line", "Circle", "Point", "ParametricCurve", "BezierCurve", "
                 var segm = parseInt($("#segments").val());
                 
                 var curve = new ParametricCurve(xt, yt, minT, maxT, segm, lineStyle);
+                scene.addObjects([curve]);
+                
+                sceneController.deselect();
+            }));
+            
+            /*
+             * event handler for "new bezier curve".
+             */
+            $("#btnNewBeziCurvet").click( (function(){
+                
+                var lineStyle = {
+                    width: $("#lineField").val() || Math.floor(Math.random()*3)+1,
+                    color: $("#colorField").val() || randomColor()
+                };
+                
+                var xt = $("#xt").val();
+                var yt = $("#yt").val();
+                
+                var segm = parseInt($("#segments").val());
+                
+                var curve = new BezierCurve(xt, yt, segm, lineStyle);
                 scene.addObjects([curve]);
                 
                 sceneController.deselect();

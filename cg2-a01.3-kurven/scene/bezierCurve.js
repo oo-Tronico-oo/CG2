@@ -30,7 +30,7 @@ define(["vec2"],
          *       begin of the form { width: 2, color: "#00FF00" }
          */
 
-        var Curve = function(xt, yt, minT, maxT, segm, lineStyle) {
+        var BezierCurve = function(xt, yt, segm, lineStyle) {
 
             console.log("creating parametic curve with x-formula " +
             xt + " & y-formula " + yt );
@@ -39,6 +39,8 @@ define(["vec2"],
             this.lineStyle = lineStyle || { width: "2", color: "#0000AA" };
             
             var p = [];
+            var minT = 0;
+            var maxT = 1;
             
             try{
                 for(var i = 0; i <= segm; i++){
@@ -114,7 +116,7 @@ define(["vec2"],
         };
 
         // this module only exports the constructor for parametic curve objects
-        return Curve;
+        return BezierCurve;
 
     })); // define
 
