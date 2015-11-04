@@ -4,9 +4,9 @@
  * changes by Kristian Hildebrand, khildebrand@beuth-hochschule.de
  * changes by Tronico 04.11.2015
  *
- * Module: parametic curve
+ * Module: bezier curve
  *
- * A parameticCurve knows how to draw itself into a specified 2D context,
+ * A bezierCurve knows how to draw itself into a specified 2D context,
  * can tell whether a certain mouse position "hits" the object.
  *
  */
@@ -19,10 +19,9 @@ define(["vec2"],
         "use strict";
 
         /**
-         *  A parametic curve
+         *  A bezier curve
          *  Parameters:
-         *  - xt: x formula for any t,
-         *  - yt: y formula for any t,
+         *  - point0 - point3 are control polygon
          *  - minT: minimum t,
          *  - maxT: maximum t,
          *  - segm: number of line segments
@@ -30,7 +29,7 @@ define(["vec2"],
          *       begin of the form { width: 2, color: "#00FF00" }
          */
 
-        var BezierCurve = function(xt, yt, segm, lineStyle) {
+        var BezierCurve = function(point0, point1, point2, point3, minT, maxT, segm, lineStyle) {
 
             console.log("creating parametic curve with x-formula " +
             xt + " & y-formula " + yt );
@@ -41,6 +40,8 @@ define(["vec2"],
             var p = [];
             var minT = 0;
             var maxT = 1;
+            var dragger1 = [0, 1];
+            var dragger2 = [0, -1];
             
             try{
                 for(var i = 0; i <= segm; i++){

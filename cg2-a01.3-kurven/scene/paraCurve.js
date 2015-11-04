@@ -43,7 +43,7 @@ define(["vec2"],
             try{
                 for(var i = 0; i <= segm; i++){
                     var t = minT + (maxT - minT) / segm * i;
-                    p[i] = [eval(xt), eval(yt)];
+                    p[i] = [250 + eval(xt), 200 + eval(yt)];
                 }
             } catch(e){
                 alert(e);
