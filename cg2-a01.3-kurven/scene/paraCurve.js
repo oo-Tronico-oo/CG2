@@ -13,8 +13,8 @@
 
 
 /* requireJS module definition */
-define([],
-    (function() {
+define(["vec2"],
+    (function(vec2) {
 
         "use strict";
 
@@ -75,7 +75,29 @@ define([],
 
             // test whether the mouse position is on this parametic curve segment
             this.isHit = function(context, pos) {
+                
+                for(i = 0; i < (p.length - 1); i++){
+                    
+                    // project point on line, get parameter of that projection point
+                    var tr = vec2.projectPointOnLine(pos, p[i], p[i+1]);
 
+                    // outside the line segment?
+                    if(tr<0.0 || tr>1.0) {
+                        console.log(false);
+                        continue;
+                    }
+                    console.log(i);
+                    
+                // coordinates of the projected point
+                var a = vec2.add(p[i], vec2.mult( vec2.sub(p[i+1],p[i]), tr ));
+
+                // distance of the point from the line
+                var b = vec2.length(vec2.sub(a,pos));
+
+                // allow 2 pixels extra "sensitivity"
+                return b<=(this.lineStyle.width/2)+2;
+                
+                }
             };
 
             // return a empty list
