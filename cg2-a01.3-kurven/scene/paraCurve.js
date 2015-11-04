@@ -30,7 +30,7 @@ define(["vec2"],
          *       begin of the form { width: 2, color: "#00FF00" }
          */
 
-        var ParametricCurve = function(xt, yt, minT, maxT, segm, lineStyle) {
+        var ParametricCurve = function(xt, yt, minT, maxT, segm, lineStyle, tick) {
 
             console.log("creating parametic curve with x-formula " +
             xt + " & y-formula " + yt );
@@ -61,16 +61,39 @@ define(["vec2"],
                 
                 // i=1, weil erster punkt schon bei moveTo abgearbeitet
                 for (var i = 1; i < p.length; i++) {
-                    context.lineTo(p[i][0], p[i][1]);
+                    context.lineTo(p[i][0], p[i][1]);   
                 }
-
+                
                 // set drawing style
                 context.lineWidth = this.lineStyle.width;
                 context.strokeStyle = this.lineStyle.color;
 
                 // actually start drawing
                 context.stroke();
-
+                
+                if(tick){
+                    
+                    context.beginPath();
+                        
+                    for (var i = 1; i < segm; i++) {
+                        
+                    //Mitte des Segments
+                    var m = vec2.sub(p[(i + 1)], p[(i - 1)]);
+                    var norm = [m[1] * (-1), m[0]];
+                    var normalized = vec2.mult(norm, (1 / vec2.length(norm)));
+                    var startP = vec2.add(p[i], vec2.mult(normalized, 10));
+                    var endP = vec2.sub(p[i], vec2.mult(normalized, 10));
+                    context.moveTo(startP[0], startP[1]);
+                    context.lineTo(endP[0], endP[1]);
+                }
+                
+                    // set drawing style
+                    context.lineWidth = this.lineStyle.width;
+                    context.strokeStyle = this.lineStyle.color;
+                
+                    // actually start drawing
+                    context.stroke();
+                }
             };
 
             // test whether the mouse position is on this parametic curve segment

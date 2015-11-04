@@ -29,7 +29,7 @@ define(["vec2", "PointDragger"],
          *       begin of the form { width: 2, color: "#00FF00" }
          */
 
-        var BezierCurve = function(point0, point1, point2, point3, segm, lineStyle) {
+        var BezierCurve = function(point0, point1, point2, point3, segm, lineStyle, tick) {
 
             console.log("creating parametic curve with x-formula " +
              " & y-formula "  );
@@ -78,6 +78,30 @@ define(["vec2", "PointDragger"],
 
                 // actually start drawing
                 context.stroke();
+                
+                if(tick){
+                    
+                    context.beginPath();
+                        
+                    for (var i = 1; i < segm; i++) {
+                        
+                    //Mitte des Segments
+                    var m = vec2.sub(p[(i + 1)], p[(i - 1)]);
+                    var norm = [m[1] * (-1), m[0]];
+                    var normalized = vec2.mult(norm, (1 / vec2.length(norm)));
+                    var startP = vec2.add(p[i], vec2.mult(normalized, 10));
+                    var endP = vec2.sub(p[i], vec2.mult(normalized, 10));
+                    context.moveTo(startP[0], startP[1]);
+                    context.lineTo(endP[0], endP[1]);
+                    }
+                
+                    // set drawing style
+                    context.lineWidth = this.lineStyle.width;
+                    context.strokeStyle = this.lineStyle.color;
+                
+                    // actually start drawing
+                    context.stroke();
+                }
 
             };
 

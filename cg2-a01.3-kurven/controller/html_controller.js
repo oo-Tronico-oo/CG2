@@ -130,8 +130,9 @@ define(["jquery", "Line", "Circle", "Point", "ParametricCurve", "BezierCurve", "
                 }
                 
                 var segm = parseInt($("#segments").val());
+                var tick = $("#tickMarks").is(':checked');
                 
-                var curve = new ParametricCurve(xt, yt, minT, maxT, segm, lineStyle);
+                var curve = new ParametricCurve(xt, yt, minT, maxT, segm, lineStyle, tick);
                 scene.addObjects([curve]);
                 
                 sceneController.deselect();
@@ -153,8 +154,9 @@ define(["jquery", "Line", "Circle", "Point", "ParametricCurve", "BezierCurve", "
                 var point3 = [randomX(), randomY()];
                 
                 var segm = parseInt($("#segments").val());
+                var tick = $("#tickMarks").is(':checked');
                 
-                var curve = new BezierCurve(point0, point1, point2, point3, segm, lineStyle);
+                var curve = new BezierCurve(point0, point1, point2, point3, segm, lineStyle, tick);
                 
                 scene.addObjects([curve]);
                 

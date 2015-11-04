@@ -249,8 +249,8 @@ define(["util", "Scene", "Polygon", "BezierCurve"],
                     // remember current position
                     this.dragLastPos = pos;
                     
-                    this.deselect(this.getSelectedObject());
-                    this.select(this.getSelectedObject());
+                   //this.deselect(this.getSelectedObject());
+                    //this.select(this.getSelectedObject());
                         
                     // some parameter of the object may have changed...
                     this.changeCallback && this.changeCallback(this.getSelectedObject());
