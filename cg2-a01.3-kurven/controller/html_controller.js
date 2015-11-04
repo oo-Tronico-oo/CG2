@@ -12,8 +12,8 @@
 
 
 /* requireJS module definition */
-define(["jquery", "Line", "Circle", "Point", "KdTree", "util", "kdutil"],
-    (function($, Line, Circle, Point, KdTree, Util, KdUtil) {
+define(["jquery", "Line", "Circle", "Point", "ParametricCurve", "KdTree", "util", "kdutil"],
+    (function($, Line, Circle, Point, ParametricCurve, KdTree, Util, KdUtil) {
         "use strict";
 
         /*
@@ -103,6 +103,27 @@ define(["jquery", "Line", "Circle", "Point", "KdTree", "util", "kdutil"],
                 // deselect all objects, then select the newly created object
                 sceneController.deselect();
 
+            }));
+            
+            /*
+             * event handler for "new parametric curve".
+             */
+            $("#btnNewParaCurve").click( (function(){
+                
+                var lineStyle = {
+                    width: Math.floor(Math.random()*3)+1,
+                    color: randomColor()
+                };
+                var xt = $("#xt").val();
+                var yt = $("#yt").val();
+                var minT = $("#minT").val();
+                var maxT = $("#maxT").val();
+                var segm = $("#segments").val();
+                
+                var curve = new ParametricCurve(xt, yt, minT, maxT, segm, lineStyle);
+                scene.addObjects([curve]);
+                
+                sceneController.deselect();
             }));
             
             /*
