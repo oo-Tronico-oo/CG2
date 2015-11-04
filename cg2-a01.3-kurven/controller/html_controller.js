@@ -12,8 +12,8 @@
 
 
 /* requireJS module definition */
-define(["jquery", "Line", "Circle", "Point", "ParametricCurve", "BezierCurve", "KdTree", "util", "kdutil"],
-    (function($, Line, Circle, Point, ParametricCurve, BezierCurve, KdTree, Util, KdUtil) {
+define(["jquery", "Line", "Circle", "Point", "ParametricCurve", "BezierCurve", "Polygon", "KdTree", "util", "kdutil"],
+    (function($, Line, Circle, Point, ParametricCurve, BezierCurve, Polygon, KdTree, Util, KdUtil) {
         "use strict";
 
         /*
@@ -155,6 +155,7 @@ define(["jquery", "Line", "Circle", "Point", "ParametricCurve", "BezierCurve", "
                 var segm = parseInt($("#segments").val());
                 
                 var curve = new BezierCurve(point0, point1, point2, point3, segm, lineStyle);
+                
                 scene.addObjects([curve]);
                 
                 sceneController.deselect();

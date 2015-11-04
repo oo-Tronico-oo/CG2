@@ -119,12 +119,15 @@ define(["util", "Scene", "Polygon", "BezierCurve"],
                 // let the object create its draggers
                 var draggers = obj.createDraggers();
                 var poly;
+                
                 // store object and its draggers in an internal list
                 if(obj instanceof BezierCurve){
-                    var poly = new Polygon(obj["controllP0"], obj["controllP1"], obj["controllP2"], obj["controllP3"], obj["lineStyle"]);
-                    console.log(poly);
+                    
+                    poly = new Polygon(obj["controllP0"], obj["controllP1"], obj["controllP2"], obj["controllP3"], obj["lineStyle"]);
+   
                     this.selected.push( { "obj": obj, "draggers": draggers, "poly": poly } );
-                    this.scene.addObjects(poly);
+                    this.scene.addObjects([poly]);
+                    
                 }else this.selected.push( { "obj": obj, "draggers": draggers } );
 
                 // add draggers as scene objects so they get rendered
@@ -149,12 +152,17 @@ define(["util", "Scene", "Polygon", "BezierCurve"],
 
                 // go backwards through list of currently selected objects
                 for(var i=this.selected.length-1; i>=0; i-=1) {
-
+                    
                     // if no obj is specified, or if this object matches...
                     if(!obj || this.selected[i].obj === obj) {
-
+                        
                         // remove draggers from scene
                         this.scene.removeObjects(this.selected[i].draggers);
+                        
+                        if(this.selected[i].poly){
+                            this.scene.removeObjects([this.selected[i].poly]);
+                        }
+                        
                         // remove object from list
                         this.selected.splice(i,1);
                     }
@@ -240,7 +248,10 @@ define(["util", "Scene", "Polygon", "BezierCurve"],
 
                     // remember current position
                     this.dragLastPos = pos;
-
+                    
+                    this.deselect(this.getSelectedObject());
+                    this.select(this.getSelectedObject());
+                        
                     // some parameter of the object may have changed...
                     this.changeCallback && this.changeCallback(this.getSelectedObject());
 
