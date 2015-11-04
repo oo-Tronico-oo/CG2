@@ -13,8 +13,8 @@
 
 
 /* requireJS module definition */
-define(["vec2"],
-    (function(vec2) {
+define(["vec2", "PointDragger"],
+    (function(vec2, PointDragger) {
 
         "use strict";
 
@@ -45,8 +45,10 @@ define(["vec2"],
             this.controllP2 = point2 || [180, 100];
             this.controllP3 = point3 || [120, 150];
             
-            
-            for(var i = 0, t, x, y, t, b0, b1, b2, b3; i <= segm; i++){
+            // draw this parametic curve into the provided 2D rendering context
+            this.draw = function(context) {
+                
+                for(var i = 0, t, x, y, t, b0, b1, b2, b3; i <= segm; i++){
                 t = minT + (maxT - minT) / segm * i;
                 
                 b0 = Math.pow((1-t), 3);
@@ -59,11 +61,6 @@ define(["vec2"],
                 
                 p[i] = [x, y];
             }
-            
-            console.log(p);
-            // draw this parametic curve into the provided 2D rendering context
-            this.draw = function(context) {
-                
                  
                 // draw actual line
                 context.beginPath();
@@ -87,7 +84,7 @@ define(["vec2"],
             // test whether the mouse position is on this parametic curve segment
             this.isHit = function(context, pos) {
                 
-                for(i = 0; i < (p.length - 1); i++){
+                for(var i = 0; i < (p.length - 1); i++){
                     
                     // project point on line, get parameter of that projection point
                     var tr = vec2.projectPointOnLine(pos, p[i], p[i+1]);
@@ -115,9 +112,27 @@ define(["vec2"],
             // return a empty list
             this.createDraggers = function() {
                 
-                var emptyList = [];
+                var draggerStyle = { radius:4, color: this.lineStyle.color, width:0, fill:true };
+                var draggers = [];
+
+                // create closure and callbacks for dragger
+                var curve = this;
+                var getP0 = function() { return curve.controllP0; };
+                var getP1 = function() { return curve.controllP1; };
+                var getP2 = function() { return curve.controllP2; };
+                var getP3 = function() { return curve.controllP3; };
                 
-                return emptyList;
+                var setP0 = function(dragEvent) { curve.controllP0 = dragEvent.position; };
+                var setP1 = function(dragEvent) { curve.controllP1 = dragEvent.position; };
+                var setP2 = function(dragEvent) { curve.controllP2 = dragEvent.position; };
+                var setP3 = function(dragEvent) { curve.controllP3 = dragEvent.position; };
+                
+                draggers.push( new PointDragger(getP0, setP0, draggerStyle) );
+                draggers.push( new PointDragger(getP1, setP1, draggerStyle) );
+                draggers.push( new PointDragger(getP2, setP2, draggerStyle) );
+                draggers.push( new PointDragger(getP3, setP3, draggerStyle) );
+
+                return draggers;
 
             };
 
