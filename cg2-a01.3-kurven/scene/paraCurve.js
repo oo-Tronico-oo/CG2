@@ -38,13 +38,31 @@ define([],
             // draw style for drawing the line
             this.lineStyle = lineStyle || { width: "2", color: "#0000AA" };
             
+            var p = [];
+            
+            try{
+                for(var i = 0; i <= segm; i++){
+                    var t = minT + (maxT - minT) / segm * i;
+                    p[i] = [eval(xt), eval(yt)];
+                }
+            } catch(e){
+                alert(e);
+                return;
+            }
+            console.log(p);
             // draw this parametic curve into the provided 2D rendering context
             this.draw = function(context) {
-
+                
+                 
                 // draw actual line
                 context.beginPath();
 
+                context.moveTo(p[0][0], p[0][1]);
                 
+                // i=1, weil erster punkt schon bei moveTo abgearbeitet
+                for (var i = 1; i < p.length; i++) {
+                    context.lineTo(p[i][0], p[i][1]);
+                }
 
                 // set drawing style
                 context.lineWidth = this.lineStyle.width;

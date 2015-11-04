@@ -114,11 +114,22 @@ define(["jquery", "Line", "Circle", "Point", "ParametricCurve", "KdTree", "util"
                     width: Math.floor(Math.random()*3)+1,
                     color: randomColor()
                 };
+                
                 var xt = $("#xt").val();
                 var yt = $("#yt").val();
-                var minT = $("#minT").val();
-                var maxT = $("#maxT").val();
-                var segm = $("#segments").val();
+                        
+                var minT;
+                var maxT;
+                
+                if (parseFloat($("#minT").val()) < parseFloat($("#maxT").val())){
+                    minT = parseFloat($("#minT").val());
+                    maxT = parseFloat($("#maxT").val());
+                } else{
+                    minT = parseFloat($("#maxT").val());
+                    maxT = parseFloat($("#minT").val());
+                }
+                
+                var segm = parseInt($("#segments").val());
                 
                 var curve = new ParametricCurve(xt, yt, minT, maxT, segm, lineStyle);
                 scene.addObjects([curve]);

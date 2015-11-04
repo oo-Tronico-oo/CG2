@@ -48,9 +48,9 @@
         <p>Color:</p>
         <input id="colorField" type="color" /><br>
         
-        <div id="lineBox" style="display: none">
+        <div id="lineBox">
         <p>Line width: </p>
-        <input id="lineField" type="number" />
+        <input id="lineField" type="number" value="2"/>
         </div>
         
         <div id="radiusBox" style="display: none">
@@ -59,19 +59,19 @@
         </div>
         
         <p>x(t):</p>
-        <input id="xt" type="text" /><br>
+        <input id="xt" type="text" value="200*Math.sin(t)"/><br>
         
         <p>y(t):</p>
-        <input id="yt" type="text" /><br>
+        <input id="yt" type="text" value="200*Math.cos(t)"/><br>
         
         <p>min t:</p>
-        <input id="minT" type="number" /><br>
+        <input id="minT" type="number" value="0"/><br>
         
         <p>max t:</p>
-        <input id="maxT" type="number" /><br>
+        <input id="maxT" type="number" value="3"/><br>
         
         <p>segments:</p>
-        <input id="segments" type="number" /><br>
+        <input id="segments" type="number" value="20"/><br>
         
         <p>tick marks: </p>
         <input id="tickMarks" type="checkbox"><br>
