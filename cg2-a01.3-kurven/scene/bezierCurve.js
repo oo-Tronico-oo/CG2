@@ -29,10 +29,10 @@ define(["vec2"],
          *       begin of the form { width: 2, color: "#00FF00" }
          */
 
-        var BezierCurve = function(point0, point1, point2, point3, minT, maxT, segm, lineStyle) {
+        var BezierCurve = function(point0, point1, point2, point3, segm, lineStyle) {
 
             console.log("creating parametic curve with x-formula " +
-            xt + " & y-formula " + yt );
+             " & y-formula "  );
 
             // draw style for drawing the line
             this.lineStyle = lineStyle || { width: "2", color: "#0000AA" };
@@ -40,18 +40,26 @@ define(["vec2"],
             var p = [];
             var minT = 0;
             var maxT = 1;
-            var dragger1 = [0, 1];
-            var dragger2 = [0, -1];
+            this.controllP0 = point0 || [100, 50];
+            this.controllP1 = point1 || [150, 80];
+            this.controllP2 = point2 || [180, 100];
+            this.controllP3 = point3 || [120, 150];
             
-            try{
-                for(var i = 0; i <= segm; i++){
-                    var t = minT + (maxT - minT) / segm * i;
-                    p[i] = [eval(xt), eval(yt)];
-                }
-            } catch(e){
-                alert(e);
-                return;
+            
+            for(var i = 0, t, x, y, t, b0, b1, b2, b3; i <= segm; i++){
+                t = minT + (maxT - minT) / segm * i;
+                
+                b0 = Math.pow((1-t), 3);
+                b1 = 3*Math.pow((1-t), 2)*t;
+                b2 = 3*(1-t)*Math.pow(t, 2);
+                b3 = Math.pow(t, 3);
+                
+                x = b0*this.controllP0[0] + b1*this.controllP1[0] + b2*this.controllP2[0] + b3*this.controllP3[0];
+                y = b0*this.controllP0[1] + b1*this.controllP1[1] + b2*this.controllP2[1] + b3*this.controllP3[1];
+                
+                p[i] = [x, y];
             }
+            
             console.log(p);
             // draw this parametic curve into the provided 2D rendering context
             this.draw = function(context) {

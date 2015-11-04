@@ -152,20 +152,9 @@ define(["jquery", "Line", "Circle", "Point", "ParametricCurve", "BezierCurve", "
                 var point2 = [randomX(), randomY()];
                 var point3 = [randomX(), randomY()];
                 
-                var minT;
-                var maxT;
-                
-                if (parseFloat($("#minT").val()) < parseFloat($("#maxT").val())){
-                    minT = parseFloat($("#minT").val());
-                    maxT = parseFloat($("#maxT").val());
-                } else{
-                    minT = parseFloat($("#maxT").val());
-                    maxT = parseFloat($("#minT").val());
-                }
-                
                 var segm = parseInt($("#segments").val());
                 
-                var curve = new BezierCurve(point0, point1, point2, point3, minT, maxT, segm, lineStyle);
+                var curve = new BezierCurve(point0, point1, point2, point3, segm, lineStyle);
                 scene.addObjects([curve]);
                 
                 sceneController.deselect();
