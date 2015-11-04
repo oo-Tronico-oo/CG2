@@ -31,6 +31,7 @@ requirejs.config({
         "Circle" : "./scene/circle",
         "PointDragger" : "./scene/point_dragger",
         "ParametricCurve" : "./scene/paraCurve",
+        "BezierCurve" : "./scene/bezierCurve",
 
         "vec2" : "./math/vec2",
 
