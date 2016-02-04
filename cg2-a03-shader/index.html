@@ -1,0 +1,237 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+
+        <!--
+         *
+         * JavaScript / WebGL teaching framwork
+         * (C)opyright Kristian Hildebrand, khildebrand@beuth-hochschule.de
+        -->
+
+        <title>CG2 A2: WebGL / Surfaces</title>
+
+        <!-- import main module using RequireJS -->
+        <script data-main="app.js" src="../lib/require.js"></script>
+
+        <!-- import style sheet -->
+        <link rel="stylesheet" type="text/css" media="screen" href="style/style.css">
+        <link rel="stylesheet" href="style/jquery-ui.css">
+
+    </head>
+
+    <body>
+
+        <!-- this element will be used to diplay errors -->
+        <pre id="error"></pre>
+
+        <!-- centered region with drawing canvas and parameter area -->
+        <div align="center">
+
+            <div id="drawing_container" width="600" height="500"></div>
+
+            <div id="param_area" >
+
+                <button id="btnRandom"   type="button"   >Random</button>
+                <button id="btnBand" type="button"   >Band</button>
+                <button id="btnEllipsoid" type="button"   >Ellipsoid</button>
+                <button id="btnParametric" type="button"   >Parametric</button>
+                <button id="btnClear" type="button"   >Clear Scene</button>
+                <br>
+                <button id="btnRobot" type="button"   >Create Robot</button>
+                <button id="btnBender" type="button"   >Create Bender</button>
+                <button id="btnTangentPoints" type="button" style="margin-top: 5px; margin-bottom: 5px">tangentPoints</button>
+                <br>
+                <button id="btnPlanet" type="button"   >Create Planet</button>
+                <button id="btnExplosion" type="button"   >Create Explosion</button>
+                <br>
+                <br>
+                <h3>Selected Object:</h3>
+                
+                    <div id="animationBox" style="float: left; font-size: 12px;">Animation<input id="checkAnimate" type="checkbox" style="width:20px"></div>
+                    <div id="wireframeBox" style="float: left; font-size: 12px;">Wireframe<input id="checkWireframe" type="checkbox" style="width:20px"></div>
+                
+                <br>
+                <br>
+                <!-- add more here... -->
+                <table id="random">
+                    <tr>
+                        <td>Number of Items:</td>
+                        <td><input id="numItems" class="objParam" type="number" min="1" max="10000" value="100">
+                    </tr>
+                    <tr>
+                        <td><button id="btnNewRandom"   type="button"   >Create Random</button></td>
+                        <td></td>
+                    </tr>
+                </table>
+                <table id="band">
+                    <tr>
+                        <td>Number of Segments:</td>
+                        <td><input id="numSegments" class="objParam" type="number" min="1" max="10000" value="100">
+                    </tr>
+                    <tr>
+                        <td>Radius:</td>
+                        <td><input id="radius" class="objParam" type="number" min="1" max="1000" value="300">
+                    </tr>
+                    <tr>
+                        <td>Height:</td>
+                        <td><input id="height" class="objParam" type="number" min="1" max="1000" value="100">
+                    </tr>
+                    <tr>
+                        <td><button id="btnNewBand"   type="button"   >Create Band</button></td>
+                        <td></td>
+                    </tr>
+                </table>
+
+                <table id="ellipsoid">
+                    <tr>
+                        <td>Number of Segments u-Direction:</td>
+                        <td><input id="ellipsoidNumSegmentsU" class="objParam" type="number" min="1" value="25">
+                    </tr>
+                    <tr>
+                        <td>Number of Segments v-Direction:</td>
+                        <td><input id="ellipsoidNumSegmentsV" class="objParam" type="number" min="1" value="25">
+                    </tr>
+                    <tr>
+                        <td>kleinster Radius:</td>
+                        <td><input id="kRadiusEllipsoid" class="objParam" type="number" min="1" value="250">
+                    </tr>
+                    <tr>
+                        <td>gr&oumlßter Radius:</td>
+                        <td><input id="gRadiusEllipsoid" class="objParam" type="number" min="1" value="125">
+                    </tr>
+                    <tr>
+                        <td>Height:</td>
+                        <td><input id="heightEllipsoid" class="objParam" type="number" min="1" value="75">
+                    </tr>
+                    <tr>
+                        <td><button id="btnNewEllipsoid"   type="button"   >Create Ellipsoid</button></td>
+                        <td></td>
+                    </tr>
+                </table>
+
+                <table id="parametric">
+                    <tr>
+                        <td></td>
+                        <td><button id="btnSphere" type="button"   >Sphere</button>
+                            <button id="btnPillow" type="button"   >Pillow</button>
+                            <button id="btnTorus" type="button"   >Torus</button></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><button id="btnHyperboloid" type="button"   >Hyperboloid</button>
+                            <button id="btnCylinder" type="button"   >Cylinder</button></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><button id="btnCube" type="button"   >Cube</button> </td>
+                    </tr>
+                    <tr>
+                        <td>Function x-Direction:</td>
+                        <td><input id="xDim" class="funct" type="text">
+                    </tr>
+                    <tr>
+                        <td>Function y-Direction:</td>
+                        <td><input id="yDim" class="funct" type="text">
+                    </tr>
+                    <tr>
+                        <td>Function z-Direction:</td>
+                        <td><input id="zDim" class="funct" type="text">
+                    </tr>
+                    <tr>
+                        <td>Number of Segments u-Direction:</td>
+                        <td><input id="numSegmentsU" class="objParam" type="number" min="1" max="10000">
+                    </tr>
+                    <tr>
+                        <td>Number of Segments v-Direction:</td>
+                        <td><input id="numSegmentsV" class="objParam" type="number" min="1" max="10000">
+                    </tr>
+                    <tr>
+                        <td>u<sub>min</sub>:</td>
+                        <td><input id="uMin" class="objParam" type="number">
+                    </tr>
+                    <tr>
+                        <td>u<sub>max</sub>:</td>
+                        <td><input id="uMax" class="objParam" type="number">
+                    </tr>
+                    <tr>
+                        <td>v<sub>min</sub>:</td>
+                        <td><input id="vMin" class="objParam" type="number">
+                    </tr>
+                    <tr>
+                        <td>v<sub>max</sub>:</td>
+                        <td><input id="vMax" class="objParam" type="number">
+                    </tr>
+                    <tr>
+                        <td><button id="btnNewParametric"   type="button"   >Create Parametric</button></td>
+                        <td></td>
+                    </tr>
+                </table>
+                
+                <div id="planet">
+                    <span style="font-size: 12px;">Day Texture<input id="checkDayTexture" checked type="checkbox" style="width:20px"></span>
+                    
+                    <span style="font-size: 12px;">Night Texture<input id="checkNightTexture" checked type="checkbox" style="width:20px"></span>
+                    <br>
+                    <br>
+                    <span style="font-size: 12px;">Clouds<input id="checkClouds" checked type="checkbox" style="width:20px"></span>
+                    <br>
+                    <br>
+                    <button id="btnNewPlanet"   type="button"   >Create Planet</button>
+                </div>
+                
+                <table id="explosion">
+                    <tr>
+                        <td>Frequency Scale:</td>
+                        <td>
+                            <input id="frequencyScale" class="objParam" type="number">
+                        </td>
+                        <td>
+                            <div id="frequencySlider" style="width: 150px; margin-left: 10px"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Color Scale:</td>
+                        <td>
+                            <input id="colorScale" class="objParam" type="number">
+                        </td>
+                        <td>
+                            <div id="colorSlider" style="width: 150px; margin-left: 10px"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Weight:</td>
+                        <td>
+                            <input id="explosionWeight" class="objParam" type="number">
+                        </td>
+                        <td>
+                            <div id="weightSlider" style="width: 150px; margin-left: 10px"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><button id="btnNewExplosion"   type="button"   >Create Explosion</button></td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    <dialog>
+        <h2>Tangentenpunkte berechnen</h2>
+        <div id="inputBox">
+            <input id="p1X" type="number" placeholder="p1 x">
+            <input id="p1Y" type="number" placeholder="p1 y">
+            <input id="p2X" type="number" placeholder="p2 x" style="margin-left: 20px">
+            <input id="p2Y" type="number" placeholder="p2 y">
+            <input id="radiusTP" type="number" placeholder="Radius" style="width: 80px">
+        </div>
+        <img src="tangentCircle.jpg" alt="tangent circle" height="223" width="322">
+        <br>
+        <div id="result">
+            Ergebnis<br><br>
+            p3: <input id="p3" type="text" style="width: 100px" disabled> p4: <input id="p4" type="text" style="width: 100px" disabled>
+        </div>
+        <br>
+        <button id="berechne" type="button">berechne</button>
+        <button id="beenden" type="button">beenden</button>
+    </dialog>
+</body>
+</html>
